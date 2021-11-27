@@ -34,16 +34,6 @@ class UserSeeder extends Seeder
         // $user->assignRole('super-admin');
         // $user->givePermissionTo(Permission::all());
 
-        $user=User::create([
-            'name' => 'guest',
-            'email' => 'guest@email.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('guest'), //bcrypt('guest'),
-            'remember_token' => Str::random(10),
-        ]);
-        // $user->syncRoles('guest');
-        // $user->givePermissionTo(['view']);
-        //
-        User::factory(48)->create();
+        User::factory(49)->create();
     }
 }
