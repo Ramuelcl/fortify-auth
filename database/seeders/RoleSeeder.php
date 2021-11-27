@@ -2,23 +2,34 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleSeeder extends Seeder
 {
-    protected $model = Role::class;
     protected $roles=[
-            // tabla roles
-            'guest',
-            'user',
-            'writer',
-            'moderator',
-            'admin',
-            'super-admin',
+        // tabla roles
+        'guest',
+        'user',
+        'writer',
+        'moderator',
+        'admin',
+        'super-admin',
 
         ];
-
+    protected $permissions=[
+        // tabla permisos
+        'access',
+        'view',
+        'new',
+        'edit',
+        'delete',
+        'publish',
+        'unpublish',
+        'printer',
+        'export',
+        ];
     /**
      * Run the database seeds.
      *
@@ -26,10 +37,37 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        // create permissions
+        foreach ($this->permissions as $key => $value) {
+            $permissions[]=Permission::create(['name'=>$value]);
+        }
+
         // create roles and assign created permissions
         foreach ($this->roles as $key => $value) {
-            $roles[]=  Role::create(['name'=>$value]);
+            $role=  Role::create(['name'=>$value]);
+            if ($value=='guest') {
+                // dd($value);
+                $role->givePermissionTo(['access']);
+            } elseif ($value=='super-admin') {
+                // dd($value);
+                $role->givePermissionTo($permissions);
+            }
         }
-        return $roles;
+
+
+        // $role = Role::create(['name' => 'writer']);
+// $permission = Permission::create(['name' => 'edit articles']);
+// Se puede asignar un permiso a un rol mediante uno de estos métodos:
+
+// $role->givePermissionTo($permission);
+// $permission->assignRole($role);
+// Se pueden sincronizar varios permisos con un rol mediante uno de estos métodos:
+
+// $role->syncPermissions($permissions);
+// $permission->syncRoles($roles);
+// Se puede eliminar un permiso de un rol mediante uno de estos métodos:
+
+// $role->revokePermissionTo($permission);
+// $permission->removeRole($role);
     }
 }
