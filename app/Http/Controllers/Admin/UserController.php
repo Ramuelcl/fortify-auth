@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -57,9 +59,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        return $id;
+        $user['roles']=Role::all('id', 'name');
+        $user['permissions']=Permission::all('id', 'name');
+
+        // return $user;
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
