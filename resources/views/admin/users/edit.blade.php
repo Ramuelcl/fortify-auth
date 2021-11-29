@@ -3,6 +3,11 @@
 {{-- @section('title', 'Guzanet') --}}
 
 @section('content')
+    @if (session('info'))
+        <div class="alert alert-success">
+            <strong>{{ session('info') }}</strong>
+        </div>
+    @endif
     <div class="card">
 
         @if ($user->count())
@@ -14,9 +19,16 @@
 
                 {!! Form::label('email', 'eMail:') !!}
                 {!! Form::email('email') !!}
-                {{-- @foreach ($user['roles'] as $role)
-                    $role
-                @endforeach --}}
+                <h2 class="h5">Listado de Roles</h2>
+                @foreach ($user['roles'] as $role)
+                    <div>
+                        <label>
+                            {!! Form::checkbox('roles[]', $role->id, false, ['class' => 'mr-1']) !!}
+                            {{ $role->name }}
+                        </label>
+                    </div>
+                @endforeach
+                {!! Form::submit('Guardar', ['class' => 'btn btn-primary mt-2']) !!}
                 {!! Form::close() !!}
 
             </div>
